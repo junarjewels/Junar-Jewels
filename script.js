@@ -1,14 +1,15 @@
 
-/* ==========================================
-   JUNAR JEWELS — WEBSITE JAVASCRIPT
-   ========================================== */
+"use strict";
 
-/*
-  IMPORTANT:
-  These are demonstration products.
-  Replace names, prices and images with your
-  actual inventory before launching the store.
-*/
+/* =====================================
+   JUNAR JEWELS — STOREFRONT
+   Demo version: no live payments or orders
+===================================== */
+
+
+/* =====================================
+   1. SAMPLE PRODUCT DATA
+===================================== */
 
 const products = [
   {
@@ -17,7 +18,7 @@ const products = [
     category: "Rings",
     price: 799,
     image: "assets/product-ring-1.jpg",
-    description: "A timeless silver design."
+    description: "A minimal silver ring for everyday elegance."
   },
   {
     id: 2,
@@ -25,7 +26,7 @@ const products = [
     category: "Earrings",
     price: 999,
     image: "assets/product-earrings-1.jpg",
-    description: "Elegant everyday jewellery."
+    description: "Simple silver earrings with a timeless finish."
   },
   {
     id: 3,
@@ -33,7 +34,7 @@ const products = [
     category: "Bracelets",
     price: 899,
     image: "assets/product-bracelet-1.jpg",
-    description: "A refined finishing touch."
+    description: "A refined bracelet designed for everyday wear."
   },
   {
     id: 4,
@@ -41,33 +42,33 @@ const products = [
     category: "Rings",
     price: 699,
     image: "assets/product-ring-2.jpg",
-    description: "Understated contemporary design."
+    description: "An understated piece for a clean, modern look."
   }
 ];
 
 
-/* ==========================================
-   ELEMENTS
-   ========================================== */
+/* =====================================
+   2. ELEMENT REFERENCES
+===================================== */
 
-const productContainer = document.getElementById("products");
-
-const cartPanel = document.getElementById("cart-panel");
-const cartOverlay = document.getElementById("cart-overlay");
-const cartToggle = document.getElementById("cart-toggle");
-const cartClose = document.getElementById("cart-close");
-
-const cartItemsContainer = document.getElementById("cart-items");
-const cartCount = document.getElementById("cart-count");
-const cartTotal = document.getElementById("cart-total");
-
-const checkoutButton = document.getElementById("checkout-button");
-const checkoutSection = document.getElementById("checkout-section");
-const checkoutClose = document.getElementById("checkout-close");
-const checkoutForm = document.getElementById("checkout-form");
+const productGrid = document.getElementById("product-grid");
 
 const menuToggle = document.getElementById("menu-toggle");
-const mobileMenu = document.getElementById("mobile-menu");
+const mobileNav = document.getElementById("mobile-nav");
+
+const searchToggle = document.getElementById("search-toggle");
+const searchPanel = document.getElementById("search-panel");
+const searchForm = document.getElementById("search-form");
+const searchInput = document.getElementById("search-input");
+
+const cartToggle = document.getElementById("cart-toggle");
+const cartOverlay = document.getElementById("cart-overlay");
+const cartClose = document.getElementById("cart-close");
+
+const cartItems = document.getElementById("cart-items");
+const cartCount = document.getElementById("cart-count");
+const cartTotal = document.getElementById("cart-total");
+const checkoutButton = document.getElementById("checkout-button");
 
 const newsletterForm = document.getElementById("newsletter-form");
 const newsletterMessage = document.getElementById("newsletter-message");
@@ -75,69 +76,88 @@ const newsletterMessage = document.getElementById("newsletter-message");
 const toast = document.getElementById("toast");
 
 
-/* ==========================================
-   SETTINGS
-   ========================================== */
+/* =====================================
+   3. APPLICATION STATE
+===================================== */
 
-const STORAGE_KEY = "junar_jewels_cart_v1";
+let cart = [];
 
-const formatPrice = (amount) => {
+try {
+  const savedCart = JSON.parse(
+    localStorage.getItem("junar-cart") || "[]"
+  );
+
+  if (Array.isArray(savedCart)) {
+    cart = savedCart.filter(item => {
+      return (
+        Number.isInteger(item.id) &&
+        Number.isInteger(item.quantity) &&
+        item.quantity > 0 &&
+        products.some(product => product.id === item.id)
+      );
+    });
+  }
+} catch (error) {
+  console.warn("Could not load saved cart:", error);
+  cart = [];
+}
+
+
+/* =====================================
+   4. HELPER FUNCTIONS
+===================================== */
+
+function formatPrice(price) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0
-  }).format(amount);
-};
-
-
-/* ==========================================
-   CART DATA
-   ========================================== */
-
-function loadCart() {
-  try {
-    const savedCart = localStorage.getItem(STORAGE_KEY);
-    const parsedCart = savedCart ? JSON.parse(savedCart) : [];
-
-    if (!Array.isArray(parsedCart)) return [];
-
-    return parsedCart
-      .filter(item =>
-        products.some(product => product.id === item.id) &&
-        Number.isInteger(item.quantity) &&
-        item.quantity > 0
-      )
-      .map(item => ({
-        id: item.id,
-        quantity: item.quantity
-      }));
-
-  } catch (error) {
-    console.warn("Unable to load saved cart.", error);
-    return [];
-  }
+  }).format(price);
 }
-
-let cart = loadCart();
 
 
 function saveCart() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    localStorage.setItem("junar-cart", JSON.stringify(cart));
   } catch (error) {
-    console.warn("Unable to save cart.", error);
+    console.warn("Could not save cart:", error);
   }
 }
 
 
-/* ==========================================
-   DISPLAY PRODUCTS
-   ========================================== */
+let toastTimer;
 
-function renderProducts() {
-  if (!productContainer) return;
+function showToast(message) {
+  if (!toast) return;
 
-  productContainer.innerHTML = products.map(product => `
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+
+/* =====================================
+   5. PRODUCT DISPLAY
+===================================== */
+
+function renderProducts(productList = products) {
+  if (!productGrid) return;
+
+  if (productList.length === 0) {
+    productGrid.innerHTML = `
+      <p class="no-products">
+        No products found. Try another search.
+      </p>
+    `;
+    return;
+  }
+
+  productGrid.innerHTML = productList.map(product => `
     <article class="product-card">
 
       <div class="product-image">
@@ -145,34 +165,29 @@ function renderProducts() {
           src="${product.image}"
           alt="${product.name}"
           loading="lazy"
-          onerror="this.style.display='none'"
         >
-
-        <span class="product-category">
-          ${product.category}
-        </span>
       </div>
 
       <div class="product-info">
-        <p class="product-description">
-          ${product.description}
+
+        <p class="product-category">
+          ${product.category}
         </p>
 
         <h3>${product.name}</h3>
 
-        <div class="product-bottom">
-          <span class="product-price">
-            ${formatPrice(product.price)}
-          </span>
+        <p class="product-price">
+          ${formatPrice(product.price)}
+        </p>
 
-          <button
-            class="add-to-cart"
-            data-product-id="${product.id}"
-            type="button"
-          >
-            ADD TO BAG +
-          </button>
-        </div>
+        <button
+          class="add-to-cart"
+          type="button"
+          data-product-id="${product.id}"
+        >
+          ADD TO BAG
+        </button>
+
       </div>
 
     </article>
@@ -180,9 +195,9 @@ function renderProducts() {
 }
 
 
-/* ==========================================
-   ADD TO CART
-   ========================================== */
+/* =====================================
+   6. ADD PRODUCTS TO CART
+===================================== */
 
 function addToCart(productId) {
   const product = products.find(item => item.id === productId);
@@ -207,82 +222,52 @@ function addToCart(productId) {
 }
 
 
-/* ==========================================
-   REMOVE FROM CART
-   ========================================== */
+if (productGrid) {
+  productGrid.addEventListener("click", event => {
+    const button = event.target.closest(".add-to-cart");
 
-function removeFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
+    if (!button) return;
 
-  saveCart();
-  renderCart();
+    const productId = Number(button.dataset.productId);
 
-  showToast("Item removed from your bag.");
+    if (Number.isInteger(productId)) {
+      addToCart(productId);
+    }
+  });
 }
 
 
-/* ==========================================
-   CHANGE QUANTITY
-   ========================================== */
-
-function changeQuantity(productId, change) {
-  const item = cart.find(item => item.id === productId);
-
-  if (!item) return;
-
-  item.quantity += change;
-
-  if (item.quantity <= 0) {
-    removeFromCart(productId);
-    return;
-  }
-
-  saveCart();
-  renderCart();
-}
-
-
-/* ==========================================
-   RENDER CART
-   ========================================== */
+/* =====================================
+   7. CART DISPLAY
+===================================== */
 
 function renderCart() {
-  if (!cartItemsContainer) return;
+  if (!cartItems || !cartCount || !cartTotal) return;
 
-  let totalItems = 0;
-  let subtotal = 0;
+  const totalQuantity = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
-  cart.forEach(item => {
+  const subtotal = cart.reduce((total, item) => {
     const product = products.find(p => p.id === item.id);
 
-    if (!product) return;
+    return total + (product ? product.price * item.quantity : 0);
+  }, 0);
 
-    totalItems += item.quantity;
-    subtotal += product.price * item.quantity;
-  });
-
-  if (cartCount) {
-    cartCount.textContent = totalItems;
-  }
-
-  if (cartTotal) {
-    cartTotal.textContent = formatPrice(subtotal);
-  }
+  cartCount.textContent = totalQuantity;
+  cartTotal.textContent = formatPrice(subtotal);
 
   if (cart.length === 0) {
-    cartItemsContainer.innerHTML = `
+    cartItems.innerHTML = `
       <p class="empty-cart">
         Your bag is currently empty.
       </p>
     `;
-
-    if (checkoutButton) checkoutButton.disabled = true;
     return;
   }
 
-  if (checkoutButton) checkoutButton.disabled = false;
-
-  cartItemsContainer.innerHTML = cart.map(item => {
+  cartItems.innerHTML = cart.map(item => {
     const product = products.find(p => p.id === item.id);
 
     if (!product) return "";
@@ -293,15 +278,16 @@ function renderCart() {
         <img
           src="${product.image}"
           alt="${product.name}"
-          onerror="this.style.display='none'"
         >
 
         <div class="cart-item-details">
+
           <h3>${product.name}</h3>
 
           <p>${formatPrice(product.price)}</p>
 
           <div class="quantity-controls">
+
             <button
               type="button"
               data-action="decrease"
@@ -317,17 +303,20 @@ function renderCart() {
               data-id="${product.id}"
               aria-label="Increase quantity"
             >+</button>
+
           </div>
 
-          <button
-            type="button"
-            class="remove-item"
-            data-action="remove"
-            data-id="${product.id}"
-          >
-            REMOVE
-          </button>
         </div>
+
+        <button
+          class="remove-item"
+          type="button"
+          data-action="remove"
+          data-id="${product.id}"
+          aria-label="Remove ${product.name}"
+        >
+          ×
+        </button>
 
       </div>
     `;
@@ -335,69 +324,72 @@ function renderCart() {
 }
 
 
-/* ==========================================
-   CART EVENT LISTENERS
-   ========================================== */
+/* =====================================
+   8. CART QUANTITY AND REMOVAL
+===================================== */
 
-if (productContainer) {
-  productContainer.addEventListener("click", event => {
-    const button = event.target.closest(".add-to-cart");
-
-    if (!button) return;
-
-    addToCart(Number(button.dataset.productId));
-  });
-}
-
-if (cartItemsContainer) {
-  cartItemsContainer.addEventListener("click", event => {
+if (cartItems) {
+  cartItems.addEventListener("click", event => {
     const button = event.target.closest("button[data-action]");
 
     if (!button) return;
 
-    const id = Number(button.dataset.id);
+    const productId = Number(button.dataset.id);
     const action = button.dataset.action;
 
+    const item = cart.find(item => item.id === productId);
+
+    if (!item) return;
+
     if (action === "increase") {
-      changeQuantity(id, 1);
+      item.quantity += 1;
     }
 
     if (action === "decrease") {
-      changeQuantity(id, -1);
+      item.quantity -= 1;
+
+      if (item.quantity <= 0) {
+        cart = cart.filter(item => item.id !== productId);
+      }
     }
 
     if (action === "remove") {
-      removeFromCart(id);
+      cart = cart.filter(item => item.id !== productId);
     }
+
+    saveCart();
+    renderCart();
   });
 }
 
 
-/* ==========================================
-   OPEN AND CLOSE CART
-   ========================================== */
+/* =====================================
+   9. OPEN AND CLOSE CART
+===================================== */
 
 function openCart() {
-  if (!cartPanel || !cartOverlay) return;
+  if (!cartOverlay) return;
 
-  cartPanel.classList.add("active");
-  cartOverlay.classList.add("active");
-
+  cartOverlay.hidden = false;
   document.body.classList.add("cart-open");
 
-  cartPanel.setAttribute("aria-hidden", "false");
+  if (cartClose) {
+    cartClose.focus();
+  }
 }
+
 
 function closeCart() {
-  if (!cartPanel || !cartOverlay) return;
+  if (!cartOverlay) return;
 
-  cartPanel.classList.remove("active");
-  cartOverlay.classList.remove("active");
-
+  cartOverlay.hidden = true;
   document.body.classList.remove("cart-open");
 
-  cartPanel.setAttribute("aria-hidden", "true");
+  if (cartToggle) {
+    cartToggle.focus();
+  }
 }
+
 
 if (cartToggle) {
   cartToggle.addEventListener("click", openCart);
@@ -408,91 +400,92 @@ if (cartClose) {
 }
 
 if (cartOverlay) {
-  cartOverlay.addEventListener("click", closeCart);
-}
-
-
-/* ==========================================
-   CHECKOUT
-   ========================================== */
-
-function openCheckout() {
-  if (!checkoutSection || cart.length === 0) return;
-
-  closeCart();
-
-  checkoutSection.hidden = false;
-  checkoutSection.classList.add("active");
-
-  document.body.classList.add("checkout-open");
-
-  checkoutSection.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
-
-function closeCheckout() {
-  if (!checkoutSection) return;
-
-  checkoutSection.classList.remove("active");
-  checkoutSection.hidden = true;
-
-  document.body.classList.remove("checkout-open");
-}
-
-if (checkoutButton) {
-  checkoutButton.addEventListener("click", openCheckout);
-}
-
-if (checkoutClose) {
-  checkoutClose.addEventListener("click", closeCheckout);
-}
-
-if (checkoutForm) {
-  checkoutForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    showToast(
-      "Demo checkout only. No order was submitted or payment collected."
-    );
+  cartOverlay.addEventListener("click", event => {
+    if (event.target === cartOverlay) {
+      closeCart();
+    }
   });
 }
 
 
-/* ==========================================
-   MOBILE NAVIGATION
-   ========================================== */
+/* =====================================
+   10. MOBILE NAVIGATION
+===================================== */
 
-function closeMobileMenu() {
-  if (!mobileMenu || !menuToggle) return;
-
-  mobileMenu.classList.remove("active");
-  menuToggle.setAttribute("aria-expanded", "false");
-}
-
-if (menuToggle && mobileMenu) {
-  menuToggle.setAttribute("aria-expanded", "false");
-
+if (menuToggle && mobileNav) {
   menuToggle.addEventListener("click", () => {
-    const isOpen = mobileMenu.classList.toggle("active");
+    const isOpen = mobileNav.classList.toggle("active");
 
+    menuToggle.classList.toggle("active", isOpen);
     menuToggle.setAttribute("aria-expanded", String(isOpen));
   });
 
-  mobileMenu.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", closeMobileMenu);
+  mobileNav.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      mobileNav.classList.remove("active");
+      menuToggle.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
   });
 }
 
 
-/* ==========================================
-   NEWSLETTER DEMO
-   ========================================== */
+/* =====================================
+   11. SEARCH
+===================================== */
+
+if (searchToggle && searchPanel) {
+  searchToggle.addEventListener("click", () => {
+    searchPanel.hidden = !searchPanel.hidden;
+
+    if (!searchPanel.hidden && searchInput) {
+      searchInput.focus();
+    }
+  });
+}
+
+
+if (searchForm && searchInput) {
+  searchForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+      renderProducts();
+      return;
+    }
+
+    const results = products.filter(product => {
+      return (
+        product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query)
+      );
+    });
+
+    renderProducts(results);
+
+    if (searchPanel) {
+      searchPanel.hidden = true;
+    }
+
+    document.getElementById("bestsellers")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+}
+
+
+/* =====================================
+   12. NEWSLETTER DEMO
+===================================== */
 
 if (newsletterForm) {
   newsletterForm.addEventListener("submit", event => {
     event.preventDefault();
+
+    if (!newsletterForm.reportValidity()) return;
 
     if (newsletterMessage) {
       newsletterMessage.textContent =
@@ -504,42 +497,64 @@ if (newsletterForm) {
 }
 
 
-/* ==========================================
-   NOTIFICATION
-   ========================================== */
+/* =====================================
+   13. CHECKOUT DEMO
+===================================== */
 
-let toastTimer;
+if (checkoutButton) {
+  checkoutButton.addEventListener("click", () => {
+    if (cart.length === 0) {
+      showToast("Your bag is empty.");
+      return;
+    }
 
-function showToast(message) {
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2800);
+    showToast("Online checkout is not connected yet.");
+  });
 }
 
 
-/* ==========================================
-   CLOSE WITH ESCAPE KEY
-   ========================================== */
+/* =====================================
+   14. KEYBOARD ACCESSIBILITY
+===================================== */
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
-    closeCart();
-    closeMobileMenu();
-    closeCheckout();
+    if (cartOverlay && !cartOverlay.hidden) {
+      closeCart();
+    }
+
+    if (searchPanel && !searchPanel.hidden) {
+      searchPanel.hidden = true;
+    }
+
+    if (mobileNav && mobileNav.classList.contains("active")) {
+      mobileNav.classList.remove("active");
+
+      if (menuToggle) {
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    }
   }
 });
 
 
-/* ==========================================
-   INITIALIZE WEBSITE
-   ========================================== */
+/* =====================================
+   15. FOOTER YEAR
+===================================== */
+
+const yearElement = document.getElementById("current-year");
+
+if (yearElement) {
+  yearElement.textContent = new Date().getFullYear();
+}
+
+
+/* =====================================
+   16. INITIALIZE WEBSITE
+===================================== */
 
 renderProducts();
 renderCart();
+
+console.log("JUNAR JEWELS storefront initialized.");
