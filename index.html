@@ -1,195 +1,624 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111111">
-<title>JUNAR JEWELS | Timeless Silver</title>
-<meta name="description" content="Discover timeless elegance with JUNAR JEWELS.">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#faf9f6;color:#171717}
-header{background:#111;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-family:Georgia,serif;letter-spacing:4px;font-size:23px}
-header button{background:none;border:1px solid #c6a96b;color:white;padding:10px 15px;cursor:pointer}
-.hero{min-height:440px;background:#24211d;color:white;display:flex;align-items:center;padding:60px 8%}
-.hero h1{font-family:Georgia,serif;font-size:48px;font-weight:400;max-width:550px}
-.hero p{margin:20px 0;color:#ddd;line-height:1.7}
-.btn{display:inline-block;background:#b89a60;color:white;border:0;padding:14px 25px;cursor:pointer;text-decoration:none}
-section{padding:65px 6%}
-.heading{text-align:center;margin-bottom:35px}
-.heading h2{font-family:Georgia,serif;font-size:32px;font-weight:400}
-.heading p{color:#777;margin-top:10px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:25px}
-.product{background:white;padding:12px}
-.product img{width:100%;height:240px;object-fit:cover;background:#eee}
-.product h3{font-family:Georgia,serif;margin:15px 0 8px}
-.price{margin-bottom:13px;color:#947443;font-weight:bold}
-.product button{width:100%;padding:12px;background:#171717;color:white;border:0;cursor:pointer}
-#cart,#checkout{background:white;margin:25px 6%;padding:25px;display:none}
-.cart-item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #ddd}
-.cart-item button{border:0;background:none;color:#a33}
-.total{font-weight:bold;margin:20px 0}
-form{display:grid;gap:13px;margin-top:20px}
-input,textarea,select{width:100%;padding:13px;border:1px solid #ccc;font:inherit}
-textarea{min-height:90px}
-footer{background:#111;color:white;text-align:center;padding:35px 15px}
-footer p{color:#bbb;margin-top:10px}
-.notice{color:#777;font-size:13px;line-height:1.6}
-@media(max-width:600px){
-.hero{min-height:360px;padding:35px 7%}
-.hero h1{font-size:37px}
-section{padding:45px 5%}
-#cart,#checkout{margin:15px 4%;padding:18px}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JUNAR JEWELS | The Art of Silver</title>
+
+    <meta name="description" content="Enter the world of JUNAR JEWELS. Discover distinctive silver jewellery, exceptional details and timeless expressions of luxury.">
+
+    <meta name="theme-color" content="#17100d">
+
+    <meta property="og:title" content="JUNAR JEWELS | The Art of Silver">
+    <meta property="og:description" content="An extraordinary expression of timeless silver jewellery.">
+    <meta property="og:type" content="website">
+
+    <!-- TYPOGRAPHY -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Italianno&display=swap" rel="stylesheet">
+
+    <!-- STYLESHEET -->
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-<div class="logo">JUNAR JEWELS</div>
-<button onclick="showCart()">CART (<span id="count">0</span>)</button>
-</header>
+    <!-- DECORATIVE ANNOUNCEMENT -->
 
-<div class="hero">
-<div>
-<p>THE ART OF TIMELESS BEAUTY</p>
-<h1>Jewellery That Tells Your Story.</h1>
-<p>Discover elegance. Discover JUNAR.</p>
-<a href="#shop" class="btn">EXPLORE COLLECTION</a>
-</div>
-</div>
+    <div class="announcement">
+        <span>✦</span>
+        AN EXTRAORDINARY EXPRESSION OF SILVER
+        <span>✦</span>
+    </div>
 
-<section id="shop">
-<div class="heading">
-<h2>Our Collection</h2>
-<p>Elegance in every detail.</p>
-</div>
-<div class="products" id="products"></div>
-</section>
 
-<div id="cart">
-<h2>Your Shopping Cart</h2>
-<div id="cartItems"></div>
-<div class="total" id="cartTotal">Total: ₹0</div>
-<button class="btn" onclick="goCheckout()">PROCEED TO CHECKOUT</button>
-<button class="btn" style="background:#555" onclick="closeCart()">CONTINUE SHOPPING</button>
-</div>
+    <!-- HEADER -->
 
-<div id="checkout">
-<h2>Delivery Information</h2>
-<p class="notice">Enter your details carefully so your order can be delivered correctly.</p>
+    <header class="site-header" id="header">
 
-<form id="orderForm">
-<input name="name" placeholder="Full Name" required>
-<input name="phone" type="tel" pattern="[0-9]{10}" placeholder="10-digit Mobile Number" required>
-<input name="email" type="email" placeholder="Email Address" required>
-<textarea name="address" placeholder="Full House Address" required></textarea>
-<input name="city" placeholder="City" required>
-<input name="state" placeholder="State" required>
-<input name="pincode" inputmode="numeric" pattern="[0-9]{6}" placeholder="6-digit PIN Code" required>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+            <span></span>
+            <span></span>
+        </button>
 
-<select name="payment" required>
-<option value="">Select Payment Method</option>
-<option value="COD">Cash on Delivery</option>
-<option value="Prepaid">Prepaid Payment</option>
-</select>
+        <nav class="nav-left">
+            <a href="#collections">COLLECTIONS</a>
+            <a href="#story">THE HOUSE</a>
+        </nav>
 
-<p class="notice">Prepaid payment will be enabled after a payment gateway is connected. No payment is collected by this demo.</p>
-<button class="btn" type="submit">PLACE TEST ORDER</button>
-</form>
-</div>
+        <a href="#home" class="brand-logo">
+            <span class="brand-crown">✧</span>
+            <span class="brand-name">JUNAR</span>
+            <span class="brand-subtitle">JEWELS · EST. 2026</span>
+        </a>
 
-<footer>
-<div class="logo">JUNAR JEWELS</div>
-<p>Timeless Elegance. Crafted With Love.</p>
-<p>Contact: Add your business email here</p>
-<p>© 2026 JUNAR JEWELS. All rights reserved.</p>
-</footer>
+        <nav class="nav-right">
+            <a href="#contact">CONTACT</a>
+            <button id="cartButton" class="bag-button">
+                THE BAG (<span id="count">0</span>)
+            </button>
+        </nav>
 
-<script>
-const products = [
- {id:1,name:"Elegant Silver Necklace",price:799,image:"https://placehold.co/500x500/f1eee8/92794d?text=Silver+Necklace"},
- {id:2,name:"Classic Silver Earrings",price:499,image:"https://placehold.co/500x500/f1eee8/92794d?text=Silver+Earrings"},
- {id:3,name:"Premium Silver Bracelet",price:699,image:"https://placehold.co/500x500/f1eee8/92794d?text=Silver+Bracelet"},
- {id:4,name:"Timeless Silver Ring",price:399,image:"https://placehold.co/500x500/f1eee8/92794d?text=Silver+Ring"}
-];
+    </header>
 
-let cart=[];
 
-function renderProducts(){
- document.getElementById("products").innerHTML=products.map(p=>`
- <div class="product">
- <img src="${p.image}" alt="${p.name}">
- <h3>${p.name}</h3>
- <div class="price">₹${p.price}</div>
- <button onclick="addToCart(${p.id})">ADD TO CART</button>
- </div>`).join("");
-}
+    <!-- MOBILE MENU -->
 
-function addToCart(id){
- const product=products.find(p=>p.id===id);
- const item=cart.find(p=>p.id===id);
- if(item)item.qty++;
- else cart.push({...product,qty:1});
- updateCart();
-}
+    <div class="mobile-menu" id="navigation">
+        <a href="#home">HOME</a>
+        <a href="#collections">COLLECTIONS</a>
+        <a href="#shop">SHOP</a>
+        <a href="#story">OUR HOUSE</a>
+        <a href="#contact">CONTACT</a>
+    </div>
 
-function updateCart(){
- document.getElementById("count").textContent=cart.reduce((s,p)=>s+p.qty,0);
- document.getElementById("cartItems").innerHTML=cart.length?
- cart.map(p=>`
- <div class="cart-item">
- <span>${p.name} × ${p.qty}</span>
- <span>₹${p.price*p.qty}
- <button onclick="removeItem(${p.id})">Remove</button></span>
- </div>`).join(""):"Your cart is empty.";
- document.getElementById("cartTotal").textContent=
- "Total: ₹"+cart.reduce((s,p)=>s+p.price*p.qty,0);
-}
 
-function removeItem(id){
- cart=cart.filter(p=>p.id!==id);
- updateCart();
-}
+    <main>
 
-function showCart(){
- document.getElementById("cart").style.display="block";
- document.getElementById("cart").scrollIntoView({behavior:"smooth"});
-}
+        <!-- HERO CAMPAIGN -->
 
-function closeCart(){
- document.getElementById("cart").style.display="none";
-}
+        <section class="hero" id="home">
 
-function goCheckout(){
- if(!cart.length){alert("Your cart is empty.");return;}
- document.getElementById("checkout").style.display="block";
- document.getElementById("checkout").scrollIntoView({behavior:"smooth"});
-}
+            <div class="hero-background">
+                <img
+                    src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=2200&q=90"
+                    alt="Artistic luxury jewellery still life">
+            </div>
 
-document.getElementById("orderForm").addEventListener("submit",function(e){
- e.preventDefault();
- const data=Object.fromEntries(new FormData(this).entries());
- if(data.payment==="Prepaid"){
- alert("Prepaid payments are not connected yet. Please choose Cash on Delivery for this test.");
- return;
- }
- const order={
- orderId:"JUN"+Date.now(),
- customer:data,
- items:cart.map(p=>({name:p.name,quantity:p.qty,price:p.price})),
- total:cart.reduce((s,p)=>s+p.price*p.qty,0)
- };
- alert("Test order created! Order ID: "+order.orderId+
- "\nTotal: ₹"+order.total+
- "\n\nThis is a demonstration. Your order has NOT been sent to JUNAR JEWELS.");
- console.log("Test order:",order);
-});
+            <div class="hero-frame"></div>
 
-renderProducts();
-updateCart();
-</script>
+            <div class="hero-decoration hero-decoration-left">
+                ✧
+            </div>
+
+            <div class="hero-decoration hero-decoration-right">
+                ✧
+            </div>
+
+            <div class="hero-content">
+
+                <span class="hero-kicker">
+                    THE HOUSE OF JUNAR PRESENTS
+                </span>
+
+                <div class="hero-ornament">✦ ✧ ✦</div>
+
+                <h1>
+                    A World Beyond
+                    <em>Ordinary.</em>
+                </h1>
+
+                <p class="hero-script">
+                    The poetry of silver.
+                </p>
+
+                <p class="hero-description">
+                    Discover a universe of distinctive jewellery,
+                    expressive details and extraordinary elegance.
+                </p>
+
+                <a href="#collections" class="gold-button">
+                    ENTER THE COLLECTION <span>↗</span>
+                </a>
+
+            </div>
+
+            <div class="hero-bottom-left">
+                JUNAR JEWELS · INDIA
+            </div>
+
+            <div class="hero-bottom-right">
+                AN ART OF ITS OWN · MMXXVI
+            </div>
+
+        </section>
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="introduction">
+
+            <div class="intro-decoration">✧</div>
+
+            <span class="eyebrow">
+                AN INVITATION TO DISCOVER
+            </span>
+
+            <h2>
+                Jewellery is not merely worn.
+                <em>It is experienced.</em>
+            </h2>
+
+            <p>
+                There is a certain magic in the details.
+                The reflection of light, the beauty of silver,
+                the character of a design.
+
+                At JUNAR JEWELS, we celebrate jewellery
+                as an expression of individuality.
+            </p>
+
+            <div class="intro-bottom">
+                ✦ &nbsp; THE ART OF TIMELESS BEAUTY &nbsp; ✦
+            </div>
+
+        </section>
+
+
+        <!-- COLLECTIONS -->
+
+        <section class="collections section" id="collections">
+
+            <div class="section-top">
+
+                <div>
+                    <span class="eyebrow">DISCOVER OUR UNIVERSE</span>
+                    <h2>The Collections</h2>
+                </div>
+
+                <p>
+                    Distinctive objects.
+                    Exceptional character.
+                </p>
+
+            </div>
+
+
+            <div class="collection-grid">
+
+                <a href="#shop" class="collection-card collection-one">
+
+                    <div class="collection-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1100&q=90"
+                            alt="Silver earrings displayed in an editorial composition">
+                    </div>
+
+                    <div class="collection-number">01</div>
+
+                    <div class="collection-info">
+                        <span>THE ART OF DETAIL</span>
+                        <h3>Earrings</h3>
+                        <p>Discover the collection ↗</p>
+                    </div>
+
+                </a>
+
+
+                <a href="#shop" class="collection-card collection-two">
+
+                    <div class="collection-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1100&q=90"
+                            alt="Elegant bracelet jewellery still life">
+                    </div>
+
+                    <div class="collection-number">02</div>
+
+                    <div class="collection-info">
+                        <span>AN EXPRESSION OF ELEGANCE</span>
+                        <h3>Bracelets</h3>
+                        <p>Discover the collection ↗</p>
+                    </div>
+
+                </a>
+
+
+                <a href="#shop" class="collection-card collection-three">
+
+                    <div class="collection-image">
+                        <img
+                            src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1100&q=90"
+                            alt="Luxury silver ring product photography">
+                    </div>
+
+                    <div class="collection-number">03</div>
+
+                    <div class="collection-info">
+                        <span>OBJECTS OF DESIRE</span>
+                        <h3>Rings</h3>
+                        <p>Discover the collection ↗</p>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- EDITORIAL CAMPAIGN -->
+
+        <section class="editorial">
+
+            <div class="editorial-image">
+                <img
+                    src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1600&q=90"
+                    alt="Luxury jewellery and artistic textures">
+            </div>
+
+            <div class="editorial-content">
+
+                <span class="eyebrow">THE JUNAR EDITORIAL · 001</span>
+
+                <div class="editorial-star">✧</div>
+
+                <h2>
+                    An affair
+                    <em>with elegance.</em>
+                </h2>
+
+                <p>
+                    For those who find beauty in the extraordinary.
+                    For those who appreciate the details.
+                    For those who never settle for ordinary.
+                </p>
+
+                <a href="#shop" class="text-link">
+                    EXPLORE THE EDITION ↗
+                </a>
+
+            </div>
+
+            <div class="editorial-side-text">
+                THE ART OF SILVER · JUNAR JEWELS
+            </div>
+
+        </section>
+
+
+        <!-- PRODUCT COLLECTION -->
+
+        <section class="shop-section section" id="shop">
+
+            <div class="shop-heading">
+
+                <div>
+                    <span class="eyebrow">A CURATED SELECTION</span>
+                    <h2>Objects of Desire.</h2>
+                </div>
+
+                <span class="shop-edition">
+                    JUNAR COLLECTION · 2026
+                </span>
+
+            </div>
+
+            <div class="products" id="products">
+                <!-- PRODUCTS GENERATED BY SCRIPT.JS -->
+            </div>
+
+        </section>
+
+
+        <!-- CRAFTSMANSHIP -->
+
+        <section class="craftsmanship" id="story">
+
+            <div class="craft-visual">
+
+                <img
+                    src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1200&q=90"
+                    alt="Close-up of jewellery and fine materials">
+
+                <div class="craft-stamp">
+                    <span>J</span>
+                    <small>THE HOUSE OF JUNAR</small>
+                </div>
+
+            </div>
+
+
+            <div class="craft-copy">
+
+                <span class="eyebrow">OUR PHILOSOPHY</span>
+
+                <h2>
+                    Created for
+                    <em>the extraordinary.</em>
+                </h2>
+
+                <p>
+                    We believe that jewellery should have
+                    a character of its own.
+
+                    Not simply another accessory, but an
+                    expression of taste, personality
+                    and appreciation for beautiful things.
+                </p>
+
+                <p>
+                    JUNAR JEWELS celebrates the art
+                    of silver and the beauty of details.
+                </p>
+
+                <div class="craft-signature">
+                    The JUNAR Philosophy
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DECORATIVE BRAND MANIFESTO -->
+
+        <section class="manifesto">
+
+            <span class="eyebrow">A JUNAR MANIFESTO</span>
+
+            <div class="manifesto-symbol">✦</div>
+
+            <h2>
+                Never ordinary.
+                <em>Always unforgettable.</em>
+            </h2>
+
+            <p>
+                A celebration of individuality,
+                timeless design and the art of detail.
+            </p>
+
+            <span class="manifesto-footer">
+                JUNAR JEWELS · THE ART OF SILVER
+            </span>
+
+        </section>
+
+
+        <!-- BRAND VALUES -->
+
+        <section class="brand-values">
+
+            <div class="value-card">
+                <span>01 / DESIGN</span>
+                <h3>Distinctive</h3>
+                <p>Designs with character and individuality.</p>
+            </div>
+
+            <div class="value-card">
+                <span>02 / MATERIAL</span>
+                <h3>Silver</h3>
+                <p>A celebration of the beauty of silver.</p>
+            </div>
+
+            <div class="value-card">
+                <span>03 / EXPERIENCE</span>
+                <h3>Personal</h3>
+                <p>An experience that feels uniquely yours.</p>
+            </div>
+
+        </section>
+
+
+        <!-- SHOPPING BAG -->
+
+        <section class="cart-section" id="cart">
+
+            <div class="cart-header">
+                <h2>Your Shopping Bag</h2>
+
+                <button id="closeCart">
+                    CONTINUE SHOPPING
+                </button>
+            </div>
+
+            <div id="cartItems"></div>
+
+            <div id="cartTotal" class="cart-total">
+                Total: ₹0
+            </div>
+
+            <button id="checkoutButton" class="gold-button">
+                PROCEED TO CHECKOUT
+            </button>
+
+        </section>
+
+
+        <!-- CHECKOUT -->
+
+        <section class="checkout-section" id="checkout">
+
+            <div class="checkout-container">
+
+                <span class="eyebrow">THE FINAL DETAILS</span>
+
+                <h2>Complete Your Order.</h2>
+
+                <p>
+                    Enter your delivery information below.
+                </p>
+
+                <form id="orderForm">
+
+                    <input
+                        name="name"
+                        type="text"
+                        placeholder="Full Name"
+                        required>
+
+                    <input
+                        name="phone"
+                        type="tel"
+                        pattern="[0-9]{10}"
+                        placeholder="10-digit Mobile Number"
+                        required>
+
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Email Address"
+                        required>
+
+                    <textarea
+                        name="address"
+                        placeholder="Complete Delivery Address"
+                        required></textarea>
+
+                    <input name="city" placeholder="City" required>
+
+                    <input name="state" placeholder="State" required>
+
+                    <input
+                        name="pincode"
+                        inputmode="numeric"
+                        pattern="[0-9]{6}"
+                        placeholder="6-digit PIN Code"
+                        required>
+
+                    <select name="payment" required>
+                        <option value="">SELECT PAYMENT METHOD</option>
+                        <option value="COD">CASH ON DELIVERY</option>
+                        <option value="Prepaid">PREPAID</option>
+                    </select>
+
+                    <p class="checkout-note">
+                        Test checkout only. Payments and actual
+                        order submission are not connected.
+                    </p>
+
+                    <button type="submit" class="gold-button">
+                        PLACE TEST ORDER
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTACT -->
+
+        <section class="contact-section" id="contact">
+
+            <div class="contact-ornament">✧ ✦ ✧</div>
+
+            <span class="eyebrow">AN INVITATION TO CONNECT</span>
+
+            <h2>
+                Enter the world
+                <em>of JUNAR.</em>
+            </h2>
+
+            <p>
+                Discover our collections.
+                Explore our designs.
+                Become part of our story.
+            </p>
+
+            <a
+                href="https://instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="gold-button">
+
+                CONNECT WITH JUNAR ↗
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-top">
+
+            <div class="footer-brand">
+
+                <a href="#home" class="footer-logo">
+                    JUNAR
+                    <span>JEWELS</span>
+                </a>
+
+                <p>
+                    An extraordinary expression of silver.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>THE COLLECTIONS</h4>
+
+                <a href="#collections">Earrings</a>
+                <a href="#collections">Bracelets</a>
+                <a href="#collections">Rings</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>THE HOUSE</h4>
+
+                <a href="#story">Our Philosophy</a>
+                <a href="#contact">Contact</a>
+                <a href="https://instagram.com/"
+                    target="_blank"
+                    rel="noopener noreferrer">Instagram</a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-middle">
+            <span>✦ JUNAR JEWELS ✦</span>
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 JUNAR JEWELS. ALL RIGHTS RESERVED.
+            </p>
+
+            <a href="#home">BACK TO TOP ↑</a>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
 </body>
+
 </html>
