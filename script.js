@@ -1,560 +1,306 @@
 
-"use strict";
-
-/* =====================================
-   JUNAR JEWELS — STOREFRONT
-   Demo version: no live payments or orders
-===================================== */
-
-
-/* =====================================
-   1. SAMPLE PRODUCT DATA
-===================================== */
-
-const products = [
-  {
-    id: 1,
-    name: "Signature Silver Ring",
-    category: "Rings",
-    price: 799,
-    image: "assets/product-ring-1.jpg",
-    description: "A minimal silver ring for everyday elegance."
-  },
-  {
-    id: 2,
-    name: "Classic Silver Earrings",
-    category: "Earrings",
-    price: 999,
-    image: "assets/product-earrings-1.jpg",
-    description: "Simple silver earrings with a timeless finish."
-  },
-  {
-    id: 3,
-    name: "Essential Silver Bracelet",
-    category: "Bracelets",
-    price: 899,
-    image: "assets/product-bracelet-1.jpg",
-    description: "A refined bracelet designed for everyday wear."
-  },
-  {
-    id: 4,
-    name: "Minimal Silver Ring",
-    category: "Rings",
-    price: 699,
-    image: "assets/product-ring-2.jpg",
-    description: "An understated piece for a clean, modern look."
-  }
-];
-
-
-/* =====================================
-   2. ELEMENT REFERENCES
-===================================== */
-
-const productGrid = document.getElementById("product-grid");
-
-const menuToggle = document.getElementById("menu-toggle");
-const mobileNav = document.getElementById("mobile-nav");
-
-const searchToggle = document.getElementById("search-toggle");
-const searchPanel = document.getElementById("search-panel");
-const searchForm = document.getElementById("search-form");
-const searchInput = document.getElementById("search-input");
-
-const cartToggle = document.getElementById("cart-toggle");
-const cartOverlay = document.getElementById("cart-overlay");
-const cartClose = document.getElementById("cart-close");
-
-const cartItems = document.getElementById("cart-items");
-const cartCount = document.getElementById("cart-count");
-const cartTotal = document.getElementById("cart-total");
-const checkoutButton = document.getElementById("checkout-button");
-
-const newsletterForm = document.getElementById("newsletter-form");
-const newsletterMessage = document.getElementById("newsletter-message");
-
-const toast = document.getElementById("toast");
-
-
-/* =====================================
-   3. APPLICATION STATE
-===================================== */
-
-let cart = [];
-
-try {
-  const savedCart = JSON.parse(
-    localStorage.getItem("junar-cart") || "[]"
-  );
-
-  if (Array.isArray(savedCart)) {
-    cart = savedCart.filter(item => {
-      return (
-        Number.isInteger(item.id) &&
-        Number.isInteger(item.quantity) &&
-        item.quantity > 0 &&
-        products.some(product => product.id === item.id)
-      );
-    });
-  }
-} catch (error) {
-  console.warn("Could not load saved cart:", error);
-  cart = [];
-}
+document.addEventListener("DOMContentLoaded", () => {
 
+    // =====================================
+    // 1. MOBILE NAVIGATION
+    // =====================================
 
-/* =====================================
-   4. HELPER FUNCTIONS
-===================================== */
+    const menuToggle = document.querySelector(".menu-toggle");
+    const mainNav = document.querySelector(".main-nav");
 
-function formatPrice(price) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0
-  }).format(price);
-}
+    if (menuToggle && mainNav) {
 
+        menuToggle.addEventListener("click", () => {
 
-function saveCart() {
-  try {
-    localStorage.setItem("junar-cart", JSON.stringify(cart));
-  } catch (error) {
-    console.warn("Could not save cart:", error);
-  }
-}
+            const isOpen = mainNav.classList.toggle("active");
 
+            menuToggle.setAttribute("aria-expanded", isOpen);
 
-let toastTimer;
+            menuToggle.innerHTML = isOpen ? "✕" : "☰";
 
-function showToast(message) {
-  if (!toast) return;
+        });
 
-  toast.textContent = message;
-  toast.classList.add("show");
+        // Close menu after clicking a navigation link
 
-  clearTimeout(toastTimer);
+        mainNav.querySelectorAll("a").forEach(link => {
 
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
+            link.addEventListener("click", () => {
 
+                mainNav.classList.remove("active");
 
-/* =====================================
-   5. PRODUCT DISPLAY
-===================================== */
+                menuToggle.classList.remove("active");
 
-function renderProducts(productList = products) {
-  if (!productGrid) return;
+                menuToggle.setAttribute("aria-expanded", "false");
 
-  if (productList.length === 0) {
-    productGrid.innerHTML = `
-      <p class="no-products">
-        No products found. Try another search.
-      </p>
-    `;
-    return;
-  }
+                menuToggle.innerHTML = "☰";
 
-  productGrid.innerHTML = productList.map(product => `
-    <article class="product-card">
+            });
 
-      <div class="product-image">
-        <img
-          src="${product.image}"
-          alt="${product.name}"
-          loading="lazy"
-        >
-      </div>
+        });
 
-      <div class="product-info">
-
-        <p class="product-category">
-          ${product.category}
-        </p>
-
-        <h3>${product.name}</h3>
-
-        <p class="product-price">
-          ${formatPrice(product.price)}
-        </p>
-
-        <button
-          class="add-to-cart"
-          type="button"
-          data-product-id="${product.id}"
-        >
-          ADD TO BAG
-        </button>
-
-      </div>
-
-    </article>
-  `).join("");
-}
-
-
-/* =====================================
-   6. ADD PRODUCTS TO CART
-===================================== */
-
-function addToCart(productId) {
-  const product = products.find(item => item.id === productId);
-
-  if (!product) return;
-
-  const existingItem = cart.find(item => item.id === productId);
-
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      id: productId,
-      quantity: 1
-    });
-  }
-
-  saveCart();
-  renderCart();
-
-  showToast(`${product.name} added to your bag.`);
-}
-
-
-if (productGrid) {
-  productGrid.addEventListener("click", event => {
-    const button = event.target.closest(".add-to-cart");
-
-    if (!button) return;
-
-    const productId = Number(button.dataset.productId);
-
-    if (Number.isInteger(productId)) {
-      addToCart(productId);
-    }
-  });
-}
-
-
-/* =====================================
-   7. CART DISPLAY
-===================================== */
-
-function renderCart() {
-  if (!cartItems || !cartCount || !cartTotal) return;
-
-  const totalQuantity = cart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-
-  const subtotal = cart.reduce((total, item) => {
-    const product = products.find(p => p.id === item.id);
-
-    return total + (product ? product.price * item.quantity : 0);
-  }, 0);
-
-  cartCount.textContent = totalQuantity;
-  cartTotal.textContent = formatPrice(subtotal);
-
-  if (cart.length === 0) {
-    cartItems.innerHTML = `
-      <p class="empty-cart">
-        Your bag is currently empty.
-      </p>
-    `;
-    return;
-  }
-
-  cartItems.innerHTML = cart.map(item => {
-    const product = products.find(p => p.id === item.id);
-
-    if (!product) return "";
-
-    return `
-      <div class="cart-item">
-
-        <img
-          src="${product.image}"
-          alt="${product.name}"
-        >
-
-        <div class="cart-item-details">
-
-          <h3>${product.name}</h3>
-
-          <p>${formatPrice(product.price)}</p>
-
-          <div class="quantity-controls">
-
-            <button
-              type="button"
-              data-action="decrease"
-              data-id="${product.id}"
-              aria-label="Decrease quantity"
-            >−</button>
-
-            <span>${item.quantity}</span>
-
-            <button
-              type="button"
-              data-action="increase"
-              data-id="${product.id}"
-              aria-label="Increase quantity"
-            >+</button>
-
-          </div>
-
-        </div>
-
-        <button
-          class="remove-item"
-          type="button"
-          data-action="remove"
-          data-id="${product.id}"
-          aria-label="Remove ${product.name}"
-        >
-          ×
-        </button>
-
-      </div>
-    `;
-  }).join("");
-}
-
-
-/* =====================================
-   8. CART QUANTITY AND REMOVAL
-===================================== */
-
-if (cartItems) {
-  cartItems.addEventListener("click", event => {
-    const button = event.target.closest("button[data-action]");
-
-    if (!button) return;
-
-    const productId = Number(button.dataset.id);
-    const action = button.dataset.action;
-
-    const item = cart.find(item => item.id === productId);
-
-    if (!item) return;
-
-    if (action === "increase") {
-      item.quantity += 1;
     }
 
-    if (action === "decrease") {
-      item.quantity -= 1;
 
-      if (item.quantity <= 0) {
-        cart = cart.filter(item => item.id !== productId);
-      }
-    }
+    // =====================================
+    // 2. SMOOTH SCROLLING
+    // =====================================
 
-    if (action === "remove") {
-      cart = cart.filter(item => item.id !== productId);
-    }
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
 
-    saveCart();
-    renderCart();
-  });
-}
+        link.addEventListener("click", event => {
 
+            const targetId = link.getAttribute("href");
 
-/* =====================================
-   9. OPEN AND CLOSE CART
-===================================== */
+            if (!targetId || targetId === "#") return;
 
-function openCart() {
-  if (!cartOverlay) return;
+            const target = document.querySelector(targetId);
 
-  cartOverlay.hidden = false;
-  document.body.classList.add("cart-open");
+            if (target) {
 
-  if (cartClose) {
-    cartClose.focus();
-  }
-}
+                event.preventDefault();
 
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
 
-function closeCart() {
-  if (!cartOverlay) return;
+            }
 
-  cartOverlay.hidden = true;
-  document.body.classList.remove("cart-open");
+        });
 
-  if (cartToggle) {
-    cartToggle.focus();
-  }
-}
-
-
-if (cartToggle) {
-  cartToggle.addEventListener("click", openCart);
-}
-
-if (cartClose) {
-  cartClose.addEventListener("click", closeCart);
-}
-
-if (cartOverlay) {
-  cartOverlay.addEventListener("click", event => {
-    if (event.target === cartOverlay) {
-      closeCart();
-    }
-  });
-}
-
-
-/* =====================================
-   10. MOBILE NAVIGATION
-===================================== */
-
-if (menuToggle && mobileNav) {
-  menuToggle.addEventListener("click", () => {
-    const isOpen = mobileNav.classList.toggle("active");
-
-    menuToggle.classList.toggle("active", isOpen);
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  mobileNav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      mobileNav.classList.remove("active");
-      menuToggle.classList.remove("active");
-      menuToggle.setAttribute("aria-expanded", "false");
-    });
-  });
-}
-
-
-/* =====================================
-   11. SEARCH
-===================================== */
-
-if (searchToggle && searchPanel) {
-  searchToggle.addEventListener("click", () => {
-    searchPanel.hidden = !searchPanel.hidden;
-
-    if (!searchPanel.hidden && searchInput) {
-      searchInput.focus();
-    }
-  });
-}
-
-
-if (searchForm && searchInput) {
-  searchForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const query = searchInput.value.trim().toLowerCase();
-
-    if (!query) {
-      renderProducts();
-      return;
-    }
-
-    const results = products.filter(product => {
-      return (
-        product.name.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query)
-      );
     });
 
-    renderProducts(results);
 
-    if (searchPanel) {
-      searchPanel.hidden = true;
+    // =====================================
+    // 3. HEADER SCROLL EFFECT
+    // =====================================
+
+    const header = document.querySelector(".site-header");
+
+    function updateHeader() {
+
+        if (!header) return;
+
+        if (window.scrollY > 50) {
+
+            header.classList.add("scrolled");
+
+        } else {
+
+            header.classList.remove("scrolled");
+
+        }
+
     }
 
-    document.getElementById("bestsellers")?.scrollIntoView({
-      behavior: "smooth"
+    window.addEventListener("scroll", updateHeader);
+
+    updateHeader();
+
+
+    // =====================================
+    // 4. SEARCH FUNCTION
+    // =====================================
+
+    const searchButton = document.querySelector(".search-button");
+
+    if (searchButton) {
+
+        searchButton.addEventListener("click", () => {
+
+            const searchTerm = prompt(
+                "What jewellery are you looking for?"
+            );
+
+            if (!searchTerm || !searchTerm.trim()) return;
+
+            const term = searchTerm.toLowerCase().trim();
+
+            const products = document.querySelectorAll(".product-card");
+
+            let found = false;
+
+            products.forEach(product => {
+
+                const productName = product.innerText.toLowerCase();
+
+                if (productName.includes(term)) {
+
+                    if (!found) {
+
+                        product.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                        found = true;
+
+                    }
+
+                    product.classList.add("search-highlight");
+
+                } else {
+
+                    product.classList.remove("search-highlight");
+
+                }
+
+            });
+
+            if (!found) {
+
+                alert("No matching jewellery found. Please try another search.");
+
+            }
+
+        });
+
+    }
+
+
+    // =====================================
+    // 5. WHATSAPP CONTACT
+    // =====================================
+
+    // Replace this with your official business WhatsApp number.
+    // Include country code, without + or spaces.
+
+    const WHATSAPP_NUMBER = "91XXXXXXXXXX";
+
+    const whatsappLinks = document.querySelectorAll(".whatsapp-link");
+
+    whatsappLinks.forEach(link => {
+
+        link.addEventListener("click", event => {
+
+            event.preventDefault();
+
+            if (WHATSAPP_NUMBER.includes("X")) {
+
+                alert("WhatsApp number will be activated soon.");
+
+                return;
+
+            }
+
+            const message = encodeURIComponent(
+                "Hello JUNAR JEWELS! I am interested in your 925 silver jewellery collection."
+            );
+
+            const whatsappURL =
+                `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+            window.open(whatsappURL, "_blank", "noopener,noreferrer");
+
+        });
+
     });
-  });
-}
 
 
-/* =====================================
-   12. NEWSLETTER DEMO
-===================================== */
+    // =====================================
+    // 6. PRODUCT IMAGE LOADING
+    // =====================================
 
-if (newsletterForm) {
-  newsletterForm.addEventListener("submit", event => {
-    event.preventDefault();
+    const productImages = document.querySelectorAll(
+        ".product-card img, .collection-card img"
+    );
 
-    if (!newsletterForm.reportValidity()) return;
+    productImages.forEach(img => {
 
-    if (newsletterMessage) {
-      newsletterMessage.textContent =
-        "Newsletter registration is not connected yet.";
+        img.addEventListener("error", () => {
+
+            img.classList.add("image-missing");
+
+            img.alt = "Product image coming soon";
+
+        });
+
+    });
+
+
+    // =====================================
+    // 7. FOOTER YEAR
+    // =====================================
+
+    const yearElement = document.getElementById("year");
+
+    if (yearElement) {
+
+        yearElement.textContent = new Date().getFullYear();
+
     }
 
-    newsletterForm.reset();
-  });
-}
 
+    // =====================================
+    // 8. REVEAL ANIMATIONS
+    // =====================================
 
-/* =====================================
-   13. CHECKOUT DEMO
-===================================== */
+    const revealElements = document.querySelectorAll(
+        ".collection-card, .product-card, .section-heading, .brand-intro, .about-section"
+    );
 
-if (checkoutButton) {
-  checkoutButton.addEventListener("click", () => {
-    if (cart.length === 0) {
-      showToast("Your bag is empty.");
-      return;
+    if ("IntersectionObserver" in window) {
+
+        const observer = new IntersectionObserver(
+            (entries, observerInstance) => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        observerInstance.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+        revealElements.forEach(element => {
+
+            element.classList.add("reveal");
+
+            observer.observe(element);
+
+        });
+
+    } else {
+
+        revealElements.forEach(element => {
+
+            element.classList.add("visible");
+
+        });
+
     }
 
-    showToast("Online checkout is not connected yet.");
-  });
-}
+
+    // =====================================
+    // 9. IMAGE SEARCH HIGHLIGHT RESET
+    // =====================================
+
+    document.addEventListener("click", event => {
+
+        if (!event.target.closest(".search-button")) {
+
+            // Keep the product highlight until another search.
+            // No action required here.
+
+        }
+
+    });
 
 
-/* =====================================
-   14. KEYBOARD ACCESSIBILITY
-===================================== */
+    // =====================================
+    // WEBSITE INITIALIZED
+    // =====================================
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
-    if (cartOverlay && !cartOverlay.hidden) {
-      closeCart();
-    }
+    console.log("JUNAR JEWELS website initialized.");
 
-    if (searchPanel && !searchPanel.hidden) {
-      searchPanel.hidden = true;
-    }
-
-    if (mobileNav && mobileNav.classList.contains("active")) {
-      mobileNav.classList.remove("active");
-
-      if (menuToggle) {
-        menuToggle.classList.remove("active");
-        menuToggle.setAttribute("aria-expanded", "false");
-      }
-    }
-  }
 });
-
-
-/* =====================================
-   15. FOOTER YEAR
-===================================== */
-
-const yearElement = document.getElementById("current-year");
-
-if (yearElement) {
-  yearElement.textContent = new Date().getFullYear();
-}
-
-
-/* =====================================
-   16. INITIALIZE WEBSITE
-===================================== */
-
-renderProducts();
-renderCart();
-
-console.log("JUNAR JEWELS storefront initialized.");
