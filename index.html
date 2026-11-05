@@ -2,383 +2,581 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>JUNAR JEWELS | Modern Silver Jewellery</title>
-  <meta
-    name="description"
-    content="Discover JUNAR JEWELS — thoughtfully selected silver jewellery with a minimalist, timeless aesthetic."
-  >
-  <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Discover JUNAR JEWELS — a curated collection of 925 sterling silver jewellery for everyday elegance.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="theme-color" content="#080808">
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  >
+    <title>JUNAR JEWELS | Silver, Refined.</title>
 
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement">
-    A NEW EXPRESSION OF EVERYDAY ELEGANCE
-  </div>
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <button
-      class="menu-toggle"
-      id="menu-toggle"
-      aria-label="Open navigation"
-      aria-expanded="false"
-    >
-      <span></span>
-      <span></span>
-    </button>
-
-    <a href="#home" class="brand-logo" aria-label="Junar Jewels home">
-      <img
-        src="assets/junar-logo.jpeg"
-        alt="JUNAR JEWELS"
-        class="logo-image"
-      >
-    </a>
-
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#collections">Collections</a>
-      <a href="#bestsellers">Bestsellers</a>
-      <a href="#our-story">Our Story</a>
-    </nav>
-
-    <div class="header-actions">
-      <button
-        class="icon-button"
-        id="search-toggle"
-        aria-label="Search products"
-        type="button"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="10.8" cy="10.8" r="6.8"></circle>
-          <path d="m16 16 5 5"></path>
-        </svg>
-      </button>
-
-      <button
-        class="icon-button cart-button"
-        id="cart-toggle"
-        aria-label="Open shopping bag"
-        type="button"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 8h14l1 13H4L5 8Z"></path>
-          <path d="M9 9V6a3 3 0 0 1 6 0v3"></path>
-        </svg>
-        <span class="cart-count" id="cart-count">0</span>
-      </button>
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+        DISCOVER THE WORLD OF JUNAR JEWELS
     </div>
-  </header>
 
-  <!-- MOBILE NAVIGATION -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
-    <a href="#home">Home</a>
-    <a href="#collections">Collections</a>
-    <a href="#bestsellers">Bestsellers</a>
-    <a href="#our-story">Our Story</a>
-  </nav>
 
-  <!-- SEARCH -->
-  <section class="search-panel" id="search-panel" hidden>
-    <form id="search-form" role="search">
-      <label for="search-input">Search JUNAR</label>
-      <div class="search-field">
-        <input
-          type="search"
-          id="search-input"
-          placeholder="Search jewellery..."
-        >
-        <button type="submit">Search</button>
-      </div>
-    </form>
-  </section>
+    <!-- HEADER -->
+    <header class="site-header">
 
-  <main>
-
-    <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <p class="eyebrow">THE ART OF SIMPLICITY</p>
-
-        <h1>
-          Elegance in<br>
-          every detail.
-        </h1>
-
-        <p class="hero-description">
-          Discover silver jewellery designed to complement
-          your everyday style.
-        </p>
-
-        <a href="#collections" class="primary-button">
-          EXPLORE COLLECTION
-        </a>
-      </div>
-
-      <div class="hero-image">
-        <img
-          src="assets/hero-jewellery.jpg"
-          alt="Minimal silver jewellery displayed in a studio"
-        >
-      </div>
-    </section>
-
-    <!-- INTRODUCTION -->
-    <section class="intro-section">
-      <p class="eyebrow">WELCOME TO JUNAR JEWELS</p>
-
-      <h2>
-        Less, but better.
-      </h2>
-
-      <p>
-        A considered collection of silver jewellery.
-        Simple forms, thoughtful details and timeless style.
-      </p>
-    </section>
-
-    <!-- COLLECTIONS -->
-    <section class="collections-section section-spacing" id="collections">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">DISCOVER JUNAR</p>
-          <h2>Our Collections</h2>
-        </div>
-
-        <a href="#bestsellers" class="text-link">
-          VIEW ALL PRODUCTS
-        </a>
-      </div>
-
-      <div class="collection-grid">
-
-        <a href="#bestsellers" class="collection-card">
-          <div class="collection-image">
-            <img
-              src="assets/collection-rings.jpg"
-              alt="Silver rings collection"
-              loading="lazy"
-            >
-          </div>
-          <div class="collection-info">
-            <h3>Rings</h3>
-            <span>EXPLORE COLLECTION ↗</span>
-          </div>
+        <a href="#" class="brand-logo">
+            <img src="assets/junar-logo.png"
+                 alt="JUNAR JEWELS"
+                 class="logo-image">
         </a>
 
-        <a href="#bestsellers" class="collection-card">
-          <div class="collection-image">
-            <img
-              src="assets/collection-earrings.jpg"
-              alt="Silver earrings collection"
-              loading="lazy"
-            >
-          </div>
-          <div class="collection-info">
-            <h3>Earrings</h3>
-            <span>EXPLORE COLLECTION ↗</span>
-          </div>
-        </a>
-
-        <a href="#bestsellers" class="collection-card">
-          <div class="collection-image">
-            <img
-              src="assets/collection-bracelets.jpg"
-              alt="Silver bracelets collection"
-              loading="lazy"
-            >
-          </div>
-          <div class="collection-info">
-            <h3>Bracelets</h3>
-            <span>EXPLORE COLLECTION ↗</span>
-          </div>
-        </a>
-
-      </div>
-    </section>
-
-    <!-- BESTSELLERS -->
-    <section class="bestsellers-section section-spacing" id="bestsellers">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">THE JUNAR EDIT</p>
-          <h2>Featured Pieces</h2>
-        </div>
-      </div>
-
-      <div class="product-grid" id="product-grid">
-        <!-- Products are loaded by script.js -->
-      </div>
-
-      <p class="demo-note">
-        Product listings and prices are currently sample content.
-      </p>
-    </section>
-
-    <!-- BRAND STORY -->
-    <section class="story-section" id="our-story">
-      <div class="story-image">
-        <img
-          src="assets/craftsmanship.jpg"
-          alt="Close-up of silver jewellery craftsmanship"
-          loading="lazy"
-        >
-      </div>
-
-      <div class="story-content">
-        <p class="eyebrow">THE JUNAR PHILOSOPHY</p>
-
-        <h2>
-          Made for your<br>
-          everyday moments.
-        </h2>
-
-        <p>
-          At JUNAR JEWELS, we believe jewellery should feel
-          personal, effortless and timeless.
-        </p>
-
-        <a href="#collections" class="text-link">
-          DISCOVER JUNAR
-        </a>
-      </div>
-    </section>
-
-    <!-- NEWSLETTER -->
-    <section class="newsletter-section">
-      <p class="eyebrow">STAY CONNECTED</p>
-
-      <h2>A little more JUNAR.</h2>
-
-      <p>
-        Be the first to discover new collections and updates.
-      </p>
-
-      <form id="newsletter-form" class="newsletter-form">
-        <input
-          type="email"
-          id="newsletter-email"
-          placeholder="Your email address"
-          aria-label="Your email address"
-          required
-        >
-        <button type="submit">SUBSCRIBE</button>
-      </form>
-
-      <p class="form-message" id="newsletter-message" aria-live="polite"></p>
-    </section>
-
-  </main>
-
-  <!-- CART DRAWER -->
-  <div class="cart-overlay" id="cart-overlay" hidden>
-    <aside
-      class="cart-drawer"
-      id="cart-drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="cart-title"
-    >
-      <div class="cart-header">
-        <h2 id="cart-title">Your Bag</h2>
-        <button
-          id="cart-close"
-          class="close-button"
-          aria-label="Close shopping bag"
-          type="button"
-        >
-          ×
-        </button>
-      </div>
-
-      <div class="cart-items" id="cart-items">
-        <p>Your bag is currently empty.</p>
-      </div>
-
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span>Subtotal</span>
-          <strong id="cart-total">₹0</strong>
-        </div>
-
-        <button
-          class="primary-button checkout-button"
-          id="checkout-button"
-          type="button"
-        >
-          CONTINUE TO CHECKOUT
+        <button class="menu-toggle"
+                aria-label="Open navigation"
+                aria-expanded="false">
+            ☰
         </button>
 
-        <p class="cart-disclaimer">
-          Checkout is not active yet. This is a demonstration storefront.
-        </p>
-      </div>
-    </aside>
-  </div>
+        <nav class="main-nav" aria-label="Main navigation">
 
-  <!-- NOTIFICATIONS -->
-  <div
-    class="toast"
-    id="toast"
-    role="status"
-    aria-live="polite"
-  ></div>
+            <a href="#home">HOME</a>
+            <a href="#collections">COLLECTIONS</a>
+            <a href="#women">WOMEN</a>
+            <a href="#men">MEN</a>
+            <a href="#about">OUR STORY</a>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-main">
+        </nav>
 
-      <div class="footer-brand">
+        <div class="header-actions">
+
+            <button class="search-button" aria-label="Search">
+                Search
+            </button>
+
+            <a href="#contact" class="bag-button">
+                CONTACT
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    THE ART OF EVERYDAY ELEGANCE
+                </p>
+
+                <h1>
+                    Silver,<br>
+                    <span>Refined.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Discover timeless expressions of individuality
+                    through our curated 925 sterling silver collection.
+                </p>
+
+                <a href="#collections" class="primary-button">
+                    EXPLORE COLLECTION
+                </a>
+
+            </div>
+
+            <div class="hero-image">
+                <img
+                    src="assets/hero-jewellery.jpg"
+                    alt="JUNAR JEWELS silver jewellery collection">
+            </div>
+
+        </section>
+
+
+        <!-- BRAND INTRODUCTION -->
+        <section class="brand-intro">
+
+            <p class="eyebrow">JUNAR JEWELS</p>
+
+            <h2>
+                Elegance in every detail.
+            </h2>
+
+            <p>
+                Jewellery is more than an accessory.
+                It is a reflection of who you are.
+            </p>
+
+        </section>
+
+
+        <!-- COLLECTIONS -->
+        <section class="collections section-padding"
+                 id="collections">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">DISCOVER JUNAR</p>
+
+                <h2>Our Collections</h2>
+
+                <p>
+                    Find your signature piece.
+                </p>
+
+            </div>
+
+
+            <div class="collection-grid">
+
+                <a href="#women" class="collection-card">
+
+                    <img
+                        src="assets/womens-rings.jpg"
+                        alt="Women's silver rings"
+                        loading="lazy">
+
+                    <div class="collection-overlay">
+                        <p>01 / COLLECTION</p>
+                        <h3>Women's Rings</h3>
+                        <span>DISCOVER →</span>
+                    </div>
+
+                </a>
+
+
+                <a href="#men" class="collection-card">
+
+                    <img
+                        src="assets/mens-rings.jpg"
+                        alt="Men's silver rings"
+                        loading="lazy">
+
+                    <div class="collection-overlay">
+                        <p>02 / COLLECTION</p>
+                        <h3>Men's Rings</h3>
+                        <span>DISCOVER →</span>
+                    </div>
+
+                </a>
+
+
+                <a href="#earrings" class="collection-card">
+
+                    <img
+                        src="assets/earrings.jpg"
+                        alt="925 silver earrings"
+                        loading="lazy">
+
+                    <div class="collection-overlay">
+                        <p>03 / COLLECTION</p>
+                        <h3>Earrings</h3>
+                        <span>DISCOVER →</span>
+                    </div>
+
+                </a>
+
+
+                <a href="#bracelets" class="collection-card">
+
+                    <img
+                        src="assets/bracelets.jpg"
+                        alt="Unisex silver bracelets"
+                        loading="lazy">
+
+                    <div class="collection-overlay">
+                        <p>04 / COLLECTION</p>
+                        <h3>Bracelets</h3>
+                        <span>DISCOVER →</span>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- WOMEN'S RINGS -->
+        <section class="product-section section-padding"
+                 id="women">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">COLLECTION 01</p>
+
+                <h2>Women's Rings</h2>
+
+                <p>
+                    Subtle details. Timeless beauty.
+                </p>
+
+            </div>
+
+            <div class="product-grid">
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/ring-r1.jpg"
+                        alt="R1 Solitaire silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>R1</span>
+                        <h3>Solitaire Ring</h3>
+                        <p>925 Sterling Silver</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/ring-r2.jpg"
+                        alt="R2 Wave silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>R2</span>
+                        <h3>Wave Ring</h3>
+                        <p>Stone Pavé Design</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/ring-r3.jpg"
+                        alt="R3 Minimal silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>R3</span>
+                        <h3>Minimal Ring</h3>
+                        <p>925 Sterling Silver</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- MEN'S RINGS -->
+        <section class="product-section dark-section section-padding"
+                 id="men">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">COLLECTION 02</p>
+
+                <h2>Men's Rings</h2>
+
+                <p>
+                    Defined by character.
+                </p>
+
+            </div>
+
+            <div class="product-grid">
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/mens-ring-m1.jpg"
+                        alt="Masculine Stone men's silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>M1</span>
+                        <h3>Masculine Stone</h3>
+                        <p>CZ / American Diamond</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/mens-ring-m2.jpg"
+                        alt="Modern Geometry silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>M2</span>
+                        <h3>Modern Geometry</h3>
+                        <p>Geometric Design</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/mens-ring-m3.jpg"
+                        alt="Organic Wave silver ring"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>M3</span>
+                        <h3>Organic Wave</h3>
+                        <p>Polished Silver Design</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- EARRINGS -->
+        <section class="product-section section-padding"
+                 id="earrings">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">COLLECTION 03</p>
+
+                <h2>Unisex Earrings</h2>
+
+                <p>
+                    A little detail makes a statement.
+                </p>
+
+            </div>
+
+            <div class="product-grid">
+
+                <article class="product-card">
+                    <img src="assets/earring-e1.jpg"
+                         alt="Classic Huggie Hoops"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E1</span>
+                        <h3>Classic Huggie Hoops</h3>
+                        <p>925 Sterling Silver</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <img src="assets/earring-e2.jpg"
+                         alt="Hoops with Round Stone"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E2</span>
+                        <h3>Hoops with Round Stone</h3>
+                        <p>Stone Detail</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <img src="assets/earring-e3.jpg"
+                         alt="Green Drop Earrings"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E3</span>
+                        <h3>Green Drop Earrings</h3>
+                        <p>Green Stone</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <img src="assets/earring-e4.jpg"
+                         alt="White Teardrop Earrings"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E4</span>
+                        <h3>White Teardrop</h3>
+                        <p>White Stone</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <img src="assets/earring-e5.jpg"
+                         alt="Blue Teardrop Earrings"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E5</span>
+                        <h3>Blue Teardrop</h3>
+                        <p>Blue Stone</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <img src="assets/earring-e6.jpg"
+                         alt="Star Hoop Earrings"
+                         loading="lazy">
+                    <div class="product-info">
+                        <span>E6</span>
+                        <h3>Star Hoop Earrings</h3>
+                        <p>Unisex Design</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- BRACELETS -->
+        <section class="product-section dark-section section-padding"
+                 id="bracelets">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">COLLECTION 04</p>
+
+                <h2>Unisex Bracelets</h2>
+
+                <p>
+                    Designed to be worn every day.
+                </p>
+
+            </div>
+
+            <div class="product-grid">
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/bracelet-b1.jpg"
+                        alt="Snake Chain Bracelet"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>B1</span>
+                        <h3>Snake Chain Bracelet</h3>
+                        <p>Unisex · 925 Silver</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+
+                <article class="product-card">
+
+                    <img
+                        src="assets/bracelet-b2.jpg"
+                        alt="Curb Chain Bracelet"
+                        loading="lazy">
+
+                    <div class="product-info">
+                        <span>B2</span>
+                        <h3>Curb Chain Bracelet</h3>
+                        <p>Unisex · 925 Silver</p>
+                        <a href="#contact">ENQUIRE NOW →</a>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- BRAND STORY -->
+        <section class="about-section section-padding"
+                 id="about">
+
+            <p class="eyebrow">THE JUNAR PHILOSOPHY</p>
+
+            <h2>
+                Made for your moments.<br>
+                Designed to last.
+            </h2>
+
+            <p>
+                At JUNAR JEWELS, we believe in the beauty
+                of thoughtful design and the timeless appeal
+                of silver jewellery.
+            </p>
+
+        </section>
+
+
+        <!-- CONTACT -->
+        <section class="contact-section" id="contact">
+
+            <p class="eyebrow">LET'S CONNECT</p>
+
+            <h2>Find your next favourite piece.</h2>
+
+            <p>
+                Have a question about our collection?
+                Connect with JUNAR JEWELS.
+            </p>
+
+            <a href="#"
+               class="primary-button whatsapp-link"
+               target="_blank"
+               rel="noopener">
+                CONTACT US ON WHATSAPP
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+
         <img
-          src="assets/junar-logo.jpeg"
-          alt="JUNAR JEWELS"
-          class="footer-logo"
-          loading="lazy"
-        >
+            src="assets/junar-logo.png"
+            alt="JUNAR JEWELS"
+            class="footer-logo">
 
-        <p>
-          Timeless silver. Thoughtful design.
+        <p>Silver, Refined.</p>
+
+        <div class="footer-links">
+            <a href="#home">HOME</a>
+            <a href="#collections">COLLECTIONS</a>
+            <a href="#about">OUR STORY</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+
+        <p class="copyright">
+            © <span id="year">2026</span> JUNAR JEWELS.
+            ALL RIGHTS RESERVED.
         </p>
-      </div>
 
-      <div class="footer-column">
-        <h3>EXPLORE</h3>
-        <a href="#collections">Collections</a>
-        <a href="#bestsellers">Featured Pieces</a>
-        <a href="#our-story">Our Story</a>
-      </div>
+    </footer>
 
-      <div class="footer-column">
-        <h3>INFORMATION</h3>
-        <a href="#footer">Contact</a>
-        <span>Shipping Policy — Coming Soon</span>
-        <span>Returns Policy — Coming Soon</span>
-        <span>Privacy Policy — Coming Soon</span>
-      </div>
 
-    </div>
-
-    <div class="footer-bottom" id="footer">
-      <p>© <span id="current-year">2026</span> JUNAR JEWELS. All rights reserved.</p>
-      <p>Designed with simplicity.</p>
-    </div>
-  </footer>
+    <!-- JAVASCRIPT -->
+    <script src="script.js"></script>
 
 </body>
 </html>
